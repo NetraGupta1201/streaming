@@ -1,35 +1,86 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const NavBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-<nav class="bg-gray-800 py-4">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="#" class="text-white font-bold text-xl">Your Video Streaming Website</a>
-        <div class="flex items-center space-x-4 lg:space-x-8">
-            <ul class="hidden lg:flex space-x-4">
-                <li><a href="#" class="text-white hover:text-gray-300">Home</a></li>
-                <li><a href="#" class="text-white hover:text-gray-300">Movies</a></li>
-                <li><a href="#" class="text-white hover:text-gray-300">TV Shows</a></li>
-                <li><a href="#" class="text-white hover:text-gray-300">Categories</a></li>
-            </ul>
-            <button class="text-white focus:outline-none lg:hidden">
-                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H3C2.44772 6 2 5.55228 2 5ZM3 10C2.44772 10 2 10.4477 2 11C2 11.5523 2.44772 12 3 12H21C21.5523 12 22 11.5523 22 11C22 10.4477 21.5523 10 21 10H3ZM3 18C2.44772 18 2 18.4477 2 19C2 19.5523 2.44772 20 3 20H21C21.5523 20 22 19.5523 22 19C22 18.4477 21.5523 18 21 18H3Z"></path>
+    <nav className="bg-gray-800 h-24 md:h-24 pt-7">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-full">
+          <div className="flex items-center pl-6 justify-center">
+            <div className="flex-shrink-0 text-white text-lg md:text-xl"> {/* Increased font size for logo */}
+              Logo
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <a href="#" 
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" // No changes for desktop navigation
+                >
+                  Home
+                </a>
+                <a href="#" 
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" // No changes for desktop navigation
+                >
+                  Movies
+                </a>
+                <a href="#" 
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" // No changes for desktop navigation
+                >
+                  TV Shows
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="-mr-2 flex md:hidden">
+            <button 
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => setIsOpen(!isOpen)}
+              type="button" 
+              className={`bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors duration-300 ${isOpen || isHovered ? 'text-white bg-gray-700' : 'hover:text-white hover:bg-gray-700'}`}
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {!isOpen ? (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
+              ) : (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
             </button>
+          </div>
         </div>
-    </div>
-    <div class="lg:hidden mt-4 px-4">
-        <ul class="text-white">
-            <li><a href="#" class="block py-2 px-4 border-b border-gray-700">Home</a></li>
-            <li><a href="#" class="block py-2 px-4 border-b border-gray-700">Movies</a></li>
-            <li><a href="#" class="block py-2 px-4 border-b border-gray-700">TV Shows</a></li>
-            <li><a href="#" class="block py-2 px-4 border-b border-gray-700">Categories</a></li>
-        </ul>
-    </div>
-
+      </div>
+      {isOpen && (
+        <div className="md:hidden fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-40 z-50 flex justify-start">
+          <div className="w-2/5 bg-gray-800 h-full overflow-y-auto">
+            <div className="px-4 py-6">
+              <a href="#" 
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:rounded-full transition-colors duration-300" // Added hover effect for mobile navigation
+              >
+                Home
+              </a>
+              <a href="#" 
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:rounded-full transition-colors duration-300" // Added hover effect for mobile navigation
+              >
+                Movies
+              </a>
+              <a href="#" 
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:rounded-full transition-colors duration-300" // Added hover effect for mobile navigation
+              >
+                TV Shows
+              </a>
+            </div>
+          </div>
+          <button onClick={() => setIsOpen(false)} className="fixed top-0 left-0 w-full h-full bg-transparent z-40"></button>
+        </div>
+      )}
     </nav>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
