@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <nav className="bg-gray-800 h-24 md:h-24 pt-7">
@@ -80,7 +80,7 @@ const NavBar = () => {
         </div>
       )}
     </nav>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar
