@@ -60,7 +60,9 @@ function App() {
       }
       {
         imgUrl &&
-        <img src={imgUrl} alt='uploaded file' height={200} />
+        <div className='mx-auto mt-6 px-8 md:px-32' style={{ maxWidth: "500px" }}>
+          <img src={imgUrl} alt='uploaded file' height={200} />
+        </div>
       }
     </div>
   );
