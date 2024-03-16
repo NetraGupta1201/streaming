@@ -27,7 +27,8 @@ export default function Home() {
 
               const metadata = await getMetadata(itemRef);
               const description = metadata.customMetadata?.description || 'No description available';
-              return { downloadUrl, description, name: itemRef.name, thumbnailUrl };
+              const title = metadata.customMetadata?.title || 'No title available';
+              return { downloadUrl, description, title, name: itemRef.name, thumbnailUrl }; // Assign title to the correct property
             }
           } catch (error) {
             console.error('Error fetching metadata for item:', error);
@@ -70,7 +71,7 @@ export default function Home() {
                 <img className="h-48 w-full object-cover md:h-full md:w-48" src={item.thumbnailUrl} alt="Thumbnail" />
               </div>
               <div className="p-8">
-                <div className="uppercase tracking-wide text-sm text-indigo-800 font-semibold">{item.name}</div> {/* Display file name */}
+                <div className="uppercase tracking-wide text-sm text-indigo-800 font-semibold">{item.title}</div> {/* Display title */}
                 <p className="mt-2 text-gray-800">{item.description}</p>
                 <div className="mt-4">
                   <a href={item.downloadUrl} className="inline-block bg-indigo-800 text-white px-4 py-2 rounded-lg mr-2">Watch/View</a>
