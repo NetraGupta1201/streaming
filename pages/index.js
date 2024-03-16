@@ -1,44 +1,13 @@
 import { useState } from "react";
 import useSWR from "swr";
-import { getDownloadURL, getMetadata, listAll, ref, getStorage } from "firebase/storage";
 import Link from 'next/link';
-
-const storage = getStorage();
+import { fetchMediaItems } from "./api/index";
 
 export default function Home() {
   const [error, setError] = useState(null);
 
   // Fetch media items with caching
-  const { data: mediaItems, error: fetchError } = useSWR("mediaItems", async () => {
-    try {
-      const storageRef = ref(storage, 'files');
-      const filesList = await listAll(storageRef);
-      const itemsPromises = filesList.items.map(async (itemRef) => {
-        try {
-          if (itemRef.name.includes('.')) {
-            const downloadUrl = await getDownloadURL(itemRef);
-            let thumbnailUrl = downloadUrl;
-            if (downloadUrl.endsWith('.mp4')) {
-              thumbnailUrl = await generateVideoThumbnail(downloadUrl);
-            }
-            const metadata = await getMetadata(itemRef);
-            const description = metadata.customMetadata?.description || 'No description available';
-            const title = metadata.customMetadata?.title || 'No title available';
-            return { downloadUrl, description, title, name: itemRef.name, thumbnailUrl };
-          }
-        } catch (error) {
-          console.error('Error fetching metadata for item:', error);
-          return null;
-        }
-      });
-      const mediaItemsData = (await Promise.all(itemsPromises)).filter(item => item !== null);
-      return mediaItemsData;
-    } catch (error) {
-      console.error('Error fetching media items:', error);
-      setError('Error fetching media items. Please try again later.');
-      throw error; // Throw error to trigger error handling in useSWR
-    }
-  });
+  const { data: mediaItems, error: fetchError } = useSWR("mediaItems", fetchMediaItems);
 
   if (fetchError) {
     return <div>Error: {fetchError}</div>;
@@ -78,8 +47,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
-
-async function generateVideoThumbnail(videoUrl) {
-  // Add your video thumbnail generation logic here
 }
