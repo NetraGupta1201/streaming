@@ -1,11 +1,10 @@
-// UploadComponent.js
-
 import React, { useState, useEffect } from "react";
 import uploadFileToFirebase from "./api/upload";
 
 const UploadComponent = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (progressPercent === 100) {
@@ -19,9 +18,14 @@ const UploadComponent = () => {
     e.preventDefault();
     const file = e.target[0]?.files[0];
     if (!file) return;
-    uploadFileToFirebase(file, (url) => {
+    uploadFileToFirebase(file, (url, uploadedDescription) => { // Pass description to callback
       setFileUrl(url);
-    }, setProgressPercent);
+      console.log("Uploaded description:", uploadedDescription); // Access uploaded description here
+    }, setProgressPercent, description); // Pass description to uploadFileToFirebase function
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   return (
@@ -37,7 +41,14 @@ const UploadComponent = () => {
           <input
             type="file"
             id="file-upload"
-            accept="video/*,image/*" // Accept both video and image file types
+            accept="video/*,image/*"
+            className="border border-gray-300 bg-white px-2 py-1 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+          />
+          <input
+            type="text"
+            placeholder="Enter description"
+            value={description}
+            onChange={handleDescriptionChange}
             className="border border-gray-300 bg-white px-2 py-1 rounded-lg text-sm focus:outline-none focus:border-gray-400"
           />
           <button
