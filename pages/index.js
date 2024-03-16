@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { getDownloadURL, getMetadata, listAll, ref, getStorage } from "firebase/storage";
+import Link from 'next/link';
 
 const storage = getStorage();
 
@@ -65,7 +66,10 @@ export default function Home() {
                 <div className="uppercase tracking-wide text-sm text-indigo-800 font-semibold">{item.title}</div>
                 <p className="mt-2 text-gray-800">{item.description}</p>
                 <div className="mt-4">
-                  <a href={item.downloadUrl} className="inline-block bg-indigo-800 text-white px-4 py-2 rounded-lg mr-2">Watch/View</a>
+                  <Link href={`/watch?url=${encodeURIComponent(item.downloadUrl)}`}>
+                    <button className="bg-green-800 text-white px-4 py-2 rounded-lg mr-2">Watch/View</button>
+                  </Link>
+                  <a href={item.downloadUrl} download className="bg-indigo-900 text-white px-4 py-2 rounded-lg mr-2">Download</a>
                 </div>
               </div>
             </div>
