@@ -1,17 +1,27 @@
 // UploadComponent.js
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import uploadFileToFirebase from "./api/upload";
 
 const UploadComponent = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
 
+  useEffect(() => {
+    if (progressPercent === 100) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
+    }
+  }, [progressPercent]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const file = e.target[0]?.files[0];
     if (!file) return;
-    uploadFileToFirebase(file, setFileUrl, setProgressPercent);
+    uploadFileToFirebase(file, (url) => {
+      setFileUrl(url);
+    }, setProgressPercent);
   };
 
   return (
