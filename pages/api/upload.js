@@ -2,7 +2,10 @@ import { ref, getDownloadURL, uploadBytesResumable, updateMetadata } from "fireb
 import { storage } from './firebase';
 
 const uploadFileToFirebase = (file, setImgUrl, setProgresspercent, description, title) => {
-  const storageRef = ref(storage, `files/${file.name}`);
+  // Generate a unique filename based on the current timestamp
+  const timestamp = Date.now();
+  const uniqueFilename = `${timestamp}_${file.name}`;
+  const storageRef = ref(storage, `files/${uniqueFilename}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   uploadTask.on("state_changed",
