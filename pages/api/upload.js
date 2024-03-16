@@ -1,7 +1,7 @@
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable, updateMetadata } from "firebase/storage";
 import { storage } from './firebase';
 
-const uploadFileToFirebase = (file, setImgUrl, setProgresspercent, description) => { // Step 1: Accept description parameter
+const uploadFileToFirebase = (file, setImgUrl, setProgresspercent, description) => {
   const storageRef = ref(storage, `files/${file.name}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -15,8 +15,19 @@ const uploadFileToFirebase = (file, setImgUrl, setProgresspercent, description) 
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        // Step 2: Pass description to setImgUrl callback
-        setImgUrl(downloadURL, description);
+        // Once upload is complete, update the metadata to include the description
+        const metadata = {
+          customMetadata: {
+            description: description
+          }
+        };
+        updateMetadata(uploadTask.snapshot.ref, metadata)
+          .then(() => {
+            setImgUrl(downloadURL, description);
+          })
+          .catch((error) => {
+            console.error('Error updating metadata:', error);
+          });
       });
     }
   );

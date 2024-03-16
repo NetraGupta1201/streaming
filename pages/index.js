@@ -91,12 +91,22 @@ async function generateVideoThumbnail(videoUrl) {
     video.src = videoUrl;
     video.crossOrigin = 'anonymous'; // Enable cross-origin access if needed
 
-    // Event listener to handle when the video can be played
-    video.addEventListener('canplay', () => {
+    // Event listener to handle when the video metadata is loaded
+    video.addEventListener('loadeddata', async () => {
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      const ctx = canvas.getContext('2d');
+
+      // Draw the first frame of the video onto the canvas
+      video.currentTime = 0; // Set to the beginning of the video
+      await new Promise(resolve => {
+        video.addEventListener('seeked', () => {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          resolve();
+        }, { once: true });
+      });
+
       const thumbnailUrl = canvas.toDataURL('image/jpeg'); // Convert canvas to data URL
       resolve(thumbnailUrl);
     });
@@ -110,4 +120,3 @@ async function generateVideoThumbnail(videoUrl) {
     video.load();
   });
 }
-

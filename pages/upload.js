@@ -20,7 +20,7 @@ const UploadComponent = () => {
     if (!file) return;
     uploadFileToFirebase(file, (url, uploadedDescription) => { // Pass description to callback
       setFileUrl(url);
-      console.log("Uploaded description:", uploadedDescription); // Access uploaded description here
+      console.log("Uploaded description:", uploadedDescription); // Log uploaded description
     }, setProgressPercent, description); // Pass description to uploadFileToFirebase function
   };
 
