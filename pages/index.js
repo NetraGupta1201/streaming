@@ -6,16 +6,14 @@ import { fetchMediaItems } from "./api/index";
 
 export default function Home() {
   const [error, setError] = useState(null);
-
-  // Fetch media items with caching
   const { data: mediaItems, error: fetchError } = useSWR("mediaItems", fetchMediaItems);
 
   if (fetchError) {
-    return <div>Error: {fetchError}</div>;
+    return <div>Error: {fetchError.message}</div>; // Access error message
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error.message}</div>; // Access error message
   }
 
   if (!mediaItems) {
@@ -23,48 +21,14 @@ export default function Home() {
   }
 
   const handleDownload = (downloadUrl, title) => {
-    // Extract the file extension from the download URL
     const fileExtension = downloadUrl.split('.').pop();
-    // Set the filename based on the video title or a default filename
     const filename = title ? `${title}.${fileExtension}` : `video.${fileExtension}`;
   
-    // Create an anchor element
     const anchor = document.createElement('a');
     anchor.href = downloadUrl;
-    anchor.download = filename; // Set the filename
+    anchor.download = filename;
     anchor.click();
   };
-// below would work but throws CORS error, can be fixed on firebase rules only
-  // const handleDownload = async (downloadUrl, title) => {
-  //   try {
-  //     const response = await fetch(downloadUrl);
-  //     const blob = await response.blob();
-  
-  //     // Create a URL for the blob
-  //     const blobUrl = window.URL.createObjectURL(blob);
-  
-  //     // Create a hidden anchor element
-  //     const a = document.createElement('a');
-  //     a.style.display = 'none';
-  //     document.body.appendChild(a);
-  
-  //     // Set the href and download attributes
-  //     a.href = blobUrl;
-  //     a.download = title ? `${title}.mp4` : 'video.mp4';
-  
-  //     // Trigger the click event on the anchor element
-  //     a.click();
-  
-  //     // Remove the anchor element
-  //     document.body.removeChild(a);
-  
-  //     // Revoke the URL to release memory
-  //     window.URL.revokeObjectURL(blobUrl);
-  //   } catch (error) {
-  //     console.error('Error downloading file:', error);
-  //   }
-  // };
-  
 
   return (
     <div className="container mx-auto px-4 md:px-10">
