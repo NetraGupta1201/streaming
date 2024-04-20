@@ -8,7 +8,7 @@ function App({ Component, pageProps }) {
   // Initialize Firebase only once when the app mounts
   useEffect(() => {
     // Make sure Firebase is initialized only once
-    if (!app.length) {
+    if (!app) {
       // If the Firebase app instance doesn't exist, initialize Firebase
       initializeApp(app.options); // Initialize with the options from the already initialized app instance
     }
