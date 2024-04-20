@@ -1,19 +1,24 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getStorage } from "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyA_m0IdrYGulFWDh6TRO4BH-WRTT45mMVA",
-  authDomain: "streaming-fe5c6.firebaseapp.com",
-  projectId: "streaming-fe5c6",
-  storageBucket: "streaming-fe5c6.appspot.com",
-  messagingSenderId: "283055978472",
-  appId: "1:283055978472:web:4b4a6a9d7a5489e069565d",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Log Firebase configuration
+console.log("Firebase configuration:", firebaseConfig);
+
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+console.log("Firebase app initialized:", app);
+
+// Initialize Firebase storage
 export const storage = getStorage(app);
+console.log("Firebase storage initialized:", storage);
