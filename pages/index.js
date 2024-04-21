@@ -2,7 +2,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import Link from 'next/link';
-import { fetchMediaItems } from "./backend/index";
+import { fetchMediaItems } from "../components/backend/index";
 
 export default function Home() {
   const [error, setError] = useState(null);

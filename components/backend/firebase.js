@@ -17,8 +17,6 @@ console.log("Firebase configuration:", firebaseConfig);
 
 // Initialize Firebase
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-console.log("Firebase app initialized:", app);
 
 // Initialize Firebase storage
 export const storage = getStorage(app);
-console.log("Firebase storage initialized:", storage);
