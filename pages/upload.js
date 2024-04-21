@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import uploadFileToFirebase from "./api/upload";
+import uploadFileToFirebase from "./backend/upload";
 
 const UploadComponent = () => {
   const [fileUrl, setFileUrl] = useState(null);

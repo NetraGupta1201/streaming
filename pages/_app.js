@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { app } from "./api/firebase"; // Import the Firebase app instance only
+import { app } from "./backend/firebase"; // Import the Firebase app instance only
 import NavBar from '@/components/NavBar';
 import "@/styles/globals.css";
 
