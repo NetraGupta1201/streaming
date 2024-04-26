@@ -13,7 +13,7 @@ export const firebaseConfig = {
 };
 
 // Log Firebase configuration
-console.log("Firebase configuration:", firebaseConfig);
+// console.log("Firebase configuration:", firebaseConfig);
 
 // Initialize Firebase
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
