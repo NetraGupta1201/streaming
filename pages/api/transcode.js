@@ -1,6 +1,6 @@
 // pages/api/transcode.js
 
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 export default function handler(req, res) {
   if (req.method !== 'GET') {
@@ -18,7 +18,12 @@ export default function handler(req, res) {
     '1080p': ['-vf', 'scale=-2:1080', '-c:v', 'libx264', '-b:v', '3000k'],
   };
 
-  // Spawn FFmpeg process to transcode and stream the video
+  // Ensure quality parameter is provided and valid
+  if (!quality || !transcodeOptions[quality]) {
+    return res.status(400).json({ error: 'Invalid quality parameter' });
+  }
+
+  // Spawn FFmpeg process to transcode the video
   const ffmpeg = spawn('ffmpeg', [
     '-i', originalVideoUrl,
     ...transcodeOptions[quality],
@@ -26,6 +31,10 @@ export default function handler(req, res) {
     '-movflags', 'frag_keyframe+empty_moov',
     'pipe:1'
   ]);
+
+  // Set response headers for chunked transfer encoding
+  res.setHeader('Content-Type', 'video/mp4');
+  res.setHeader('Transfer-Encoding', 'chunked');
 
   // Pipe FFmpeg output to HTTP response
   ffmpeg.stdout.pipe(res);
